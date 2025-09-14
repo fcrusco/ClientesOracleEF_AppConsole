@@ -4,7 +4,7 @@ using ClientesOracleEf.Model;
 using Microsoft.EntityFrameworkCore;
 
 // É o endereço completo para acessar o Oracle: usuário, senha, host:porta/ServiceName
-var connectionString = "User Id=xxxx;Password=xxxx;Data Source=oracle.xxxx.com.br:1521/ORCL;";
+var connectionString = "User Id=xxxx;Password=xxxx;Data Source=oracle.fiap.com.br:1521/ORCL;";
 
 //Cria um “pacote de opções” que diz ao EF: “use Oracle e conecte em connectionString”
 //'options' vamos usar no nosso AppDbContext
@@ -15,11 +15,16 @@ var options = new DbContextOptionsBuilder<AppDbContext>()
 int opcao;
 do
 {
+    Console.WriteLine("\n======================");
     Console.WriteLine("\n=== MENU CLIENTES ===");
     Console.WriteLine("1 - Inserir");
     Console.WriteLine("2 - Listar");
     Console.WriteLine("3 - Atualizar");
     Console.WriteLine("4 - Excluir");
+    Console.WriteLine("5 - Filtrar por Nome ");
+    Console.WriteLine("6 - Retornar 3 Clientes ");
+    Console.WriteLine("7 - Total de Clientes ");
+    Console.WriteLine("8 - A tabela está vazia? ");
     Console.WriteLine("0 - Sair");
     Console.WriteLine("----------------------");
     Console.Write("Escolha: ");
@@ -62,10 +67,9 @@ do
                 Console.WriteLine($"Inserido com Id: {novo.IdCliente}");
                 break;
 
-            case 2: // READ
-                //LINQ / AsNoTracking(): melhora performance em consultas onde não vamos alterar os dados
+            case 2: // Lista ordenada por nome
                 var lista = db.Clientes.AsNoTracking()
-                                       .OrderBy(c => c.IdCliente)
+                                       .OrderBy(c => c.Nome)
                                        .ToList();
 
                 if (lista.Count == 0)
@@ -133,6 +137,54 @@ do
                 {
                     Console.WriteLine("ID inválido.");
                 }
+                break;
+
+            case 5: //Filtra por parte do Nome
+                Console.Write("Digite um nome para filtrar: ");
+                var nomeBusca = Console.ReadLine()?.Trim();
+                var filtrados = db.Clientes
+                  .Where(c => c.Nome.Contains(nomeBusca))
+                  .ToList();
+                
+                Console.WriteLine($"Clientes com Nome '{nomeBusca}':");
+                foreach (var c in filtrados)
+                    Console.WriteLine($"{c.IdCliente}: {c.Nome} {c.Sobrenome}");
+
+                Console.WriteLine("\n---------------------------------------------\n");
+
+                break;
+
+            case 6: //Retornar 3 Clientes
+                var tres = db.Clientes
+                        .Take(3)
+                        .ToList();
+
+                Console.WriteLine("Três primeiros clientes:");
+                foreach (var c in tres)
+                    Console.WriteLine($"{c.IdCliente}: {c.Nome} {c.Sobrenome}");
+
+                Console.WriteLine("\n---------------------------------------------\n");
+
+                break;
+
+            case 7: //Total de Clientes
+                var total = db.Clientes.Count();
+                Console.WriteLine($"Total de Clientes cadastrados: {total}");
+
+                Console.WriteLine("\n---------------------------------------------\n");
+
+                break;
+
+            case 8: //A tabela está vazia?
+                bool tabelaVazia = !db.Clientes.Any(); // true se estiver vazia
+                //.Any() é usado para verificar se existe pelo menos um registro que atenda a condição
+                if (tabelaVazia)
+                    Console.WriteLine($"Tabela vazia!");
+                else
+                    Console.WriteLine($"A Tabela NAO esta vazia!");
+                    
+                Console.WriteLine("\n---------------------------------------------\n");
+
                 break;
 
             case 0:
