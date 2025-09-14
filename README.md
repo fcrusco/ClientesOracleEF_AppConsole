@@ -1,6 +1,6 @@
 # Aplicação Console (.NET 8) + EF Core + Oracle — Sem Code-First
 
-<img width="451" height="324" alt="image" src="https://github.com/user-attachments/assets/ccb81e6f-f1aa-4fb0-90b3-0b97b2020a66" />
+<img width="385" height="366" alt="image" src="https://github.com/user-attachments/assets/c08856e4-d340-48fe-b395-4bed96a04548" />
 
 
 ## 🇧🇷 Versão em Português
