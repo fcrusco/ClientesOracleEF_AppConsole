@@ -1,4 +1,4 @@
-# Aplicação Console (.NET 8) + EF Core + Oracle — Sem Code-First
+# Aplicação Console (.NET 8) + EF Core + Oracle
 
 <img width="385" height="366" alt="image" src="https://github.com/user-attachments/assets/c08856e4-d340-48fe-b395-4bed96a04548" />
 
